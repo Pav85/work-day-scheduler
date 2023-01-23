@@ -22,9 +22,20 @@ console.log('hello world');
 
 // typed events need to persist even between refreshing the page
 
+var currentDate = moment().format("dddd, MMMM Do");
+
+console.log(currentDate);
+
+
+function currentTime() {
+
+return $("#currentDay").text(currentDate)
+
+};
+currentTime();
 
 // edit html
-for (var i = 0; i <= 8; i++) {
+for (var i = 9; i < 18; i++) {
 
 var domEl = $(".container");
 var timeBlock =  $("<div>");
@@ -37,8 +48,12 @@ var saveButton = $("<button>");
 timeBlock.addClass("time-block");
 row.addClass("row");
 hourBlock.addClass("hour col-1");   // will need to be changed
-textBlock.addClass("textarea col-10 description past"); // will need to be changed
-saveButton.addClass("saveBtn saveBtn i:hover col-1"); // will need to be changed
+hourBlock.text([i]);
+hourBlock.css("background-color", "yellow");
+hourBlock.css("padding-top", "30px");
+
+textBlock.addClass("textarea col-10 hour"); // hour class might need to be changed 
+saveButton.addClass("saveBtn saveBtn i:hover col-1 fa fa-save"); // will need to be changed
 
 
 
@@ -46,18 +61,20 @@ domEl.append(timeBlock);
 timeBlock.append(row);
 row.append(hourBlock, textBlock, saveButton);
 
-}
+
+let hour = moment().hours();     // gets current hour 
+
+
+if (i < hour) {                          // if statement that color codes time blocks based on current time
+    textBlock.addClass("past");
+} else if (i == hour) {
+    textBlock.addClass("present");
+} else {
+    textBlock.addClass("future");
+};
 
 
 
-
-
-
-
-
-
-
-
-
+};
 
 
