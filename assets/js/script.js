@@ -24,6 +24,8 @@ console.log('hello world');
 
 var currentDate = moment().format("dddd, MMMM Do");
 
+
+
 console.log(currentDate);
 
 
@@ -51,15 +53,18 @@ hourBlock.addClass("hour col-1");   // will need to be changed
 hourBlock.text([i]);
 hourBlock.css("background-color", "yellow");
 hourBlock.css("padding-top", "30px");
-
-textBlock.addClass("textarea col-10 hour"); // hour class might need to be changed 
-saveButton.addClass("saveBtn saveBtn i:hover col-1 fa fa-save"); // will need to be changed
+              // text area not a class bot sure yet what it does
+textBlock.addClass("textarea col-10 hour"); // hour class can be changed for slightly different look 
+saveButton.addClass("saveBtn saveBtn i:hover col-1 fa fa-save"); 
 
 
 
 domEl.append(timeBlock);
 timeBlock.append(row);
 row.append(hourBlock, textBlock, saveButton);
+
+
+
 
 
 let hour = moment().hours();     // gets current hour 
@@ -72,7 +77,6 @@ if (i < hour) {                          // if statement that color codes time b
 } else {
     textBlock.addClass("future");
 };
-
 
 
 };
