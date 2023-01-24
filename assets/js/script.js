@@ -43,7 +43,7 @@ var domEl = $(".container");
 var timeBlock =  $("<div>");
 var row = $("<div>");
 var hourBlock = $("<div>");
-var textBlock = $("<div>");
+var textBlock = $("<textarea>");
 var saveButton = $("<button>");
 
 
@@ -54,14 +54,16 @@ hourBlock.text([i]);
 hourBlock.css("background-color", "yellow");
 hourBlock.css("padding-top", "30px");
               // text area not a class bot sure yet what it does
-textBlock.addClass("textarea col-10 hour"); // hour class can be changed for slightly different look 
-saveButton.addClass("saveBtn saveBtn i:hover col-1 fa fa-save"); 
 
+textBlock.addClass("description col-10"); // hour class c
+
+saveButton.addClass("saveBtn saveBtn i:hover col-1 fa fa-save"); 
 
 
 domEl.append(timeBlock);
 timeBlock.append(row);
 row.append(hourBlock, textBlock, saveButton);
+
 
 
 
@@ -77,6 +79,7 @@ if (i < hour) {                          // if statement that color codes time b
 } else {
     textBlock.addClass("future");
 };
+
 
 
 };
