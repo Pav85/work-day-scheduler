@@ -1,57 +1,73 @@
 function currentTime() {
   var currentDate = moment().format("dddd, MMMM Do");
-  $("#currentDay").text(currentDate);
+  var currentTime = moment().format("h:mm A");
+  var dateTimeDisplay = currentDate + " - " + currentTime;
+
+  $("#currentDay").text(dateTimeDisplay);
 }
 currentTime();
-
-// edit html
-for (var i = 9; i < 18; i++) {
+function createTimeBlocks() {
   var domEl = $(".container");
-  var timeBlock = $("<div>");
-  var row = $("<div>");
-  var hourBlock = $("<div>");
-  var textBlock = $("<textarea>");
-  var saveButton = $("<button>");
+  var currentHour = moment().hours();
+  var timeBlockEntries =
+    JSON.parse(localStorage.getItem("timeBlockEntries")) || {};
 
-  timeBlock.addClass("time-block");
-  row.addClass("row");
-  hourBlock.addClass("hour col-1");
-  hourBlock.text([i]);
-  hourBlock.css("background-color", "yellow");
-  hourBlock.css("padding-top", "30px");
+  for (let i = 9; i < 24; i++) {
+    var formattedHour = moment({ hour: i }).format("h A");
+    var timeBlock = $("<div>").addClass("time-block");
+    var row = $("<div>").addClass("row");
+    var hourBlock = $("<div>").addClass("hour col-1").text(formattedHour).css({
+      "background-color": "yellow",
+      display: "flex",
+      "justify-content": "center",
+      "align-items": "center",
+    });
+    var textBlock = $("<textarea>").addClass("description col-10");
+    var saveButton = $("<button>").addClass(
+      "saveBtn saveBtn i:hover col-1 fa fa-save"
+    );
 
-  textBlock.addClass("description col-10");
+    // Color coding and disabling past time blocks
+    if (i < currentHour) {
+      textBlock.addClass("past");
+      textBlock.prop("disabled", true);
+      saveButton.prop("disabled", true);
+    } else if (i === currentHour) {
+      textBlock.addClass("present");
+    } else {
+      textBlock.addClass("future");
+    }
 
-  saveButton.addClass("saveBtn saveBtn i:hover col-1 fa fa-save");
+    // Populate text block if data exists
+    if (timeBlockEntries[i]) {
+      textBlock.val(timeBlockEntries[i]);
+    }
 
-  domEl.append(timeBlock);
-  timeBlock.append(row);
-  row.append(hourBlock, textBlock, saveButton);
+    // Append elements
+    domEl.append(timeBlock);
+    timeBlock.append(row);
+    row.append(hourBlock, textBlock, saveButton);
 
-  let hour = moment().hours(); // gets current hour
-
-  if (i < hour) {
-    // if statement that color codes time blocks based on current time
-    textBlock.addClass("past");
-  } else if (i == hour) {
-    textBlock.addClass("present");
-  } else {
-    textBlock.addClass("future");
+    // Save button functionality
+    (function (index, tb) {
+      saveButton.click(function () {
+        var entryValue = tb.val();
+        if (entryValue.trim() !== "") {
+          timeBlockEntries[index] = entryValue;
+          localStorage.setItem(
+            "timeBlockEntries",
+            JSON.stringify(timeBlockEntries)
+          );
+        } else {
+          delete timeBlockEntries[index];
+          localStorage.setItem(
+            "timeBlockEntries",
+            JSON.stringify(timeBlockEntries)
+          );
+        }
+      });
+    })(i, textBlock);
   }
-
-  // local storage issue to be solved
-
-  saveButton.click(function () {
-    console.log("Hello");
-    var timeBlockEntries =
-      JSON.parse(localStorage.getItem("timeBlockEntries")) || [];
-
-    var hourBlockData = {
-      hour: hourBlock.val([i]),
-      hourEntry: textBlock.val(),
-    };
-
-    timeBlockEntries.push(hourBlockData);
-    localStorage.setItem("timeBlockEntries", JSON.stringify(timeBlockEntries));
-  });
 }
+
+createTimeBlocks();
