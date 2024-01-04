@@ -12,7 +12,7 @@ function createTimeBlocks() {
   var timeBlockEntries =
     JSON.parse(localStorage.getItem("timeBlockEntries")) || {};
 
-  for (let i = 9; i < 24; i++) {
+  for (let i = 9; i < 18; i++) {
     var formattedHour = moment({ hour: i }).format("h A");
     var timeBlock = $("<div>").addClass("time-block");
     var row = $("<div>").addClass("row");
